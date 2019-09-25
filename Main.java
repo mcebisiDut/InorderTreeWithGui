@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Stack;
 
 class Main {
-    private static String sign;
 
     public static void main(String[] args) {
         BinaryTree binaryTree = new BinaryTree();
@@ -12,7 +11,6 @@ class Main {
         char[] postfixNotation = getPostFixNotation(expression);
         binaryTree.construct(postfixNotation);
         new TreeGUI(binaryTree);
-        //List<Character> items = new ArrayList<Character>(postfixNotation);
         for(char c : postfixNotation){
             System.out.println(getFormat(c));
             System.out.println("Pop result");

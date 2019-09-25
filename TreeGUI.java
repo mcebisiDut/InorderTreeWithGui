@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -39,13 +41,16 @@ class DrawTree extends JPanel {
         Draw(graphics, 0, getWidth(), 0, getHeight() / tree.getheight(tree.root), tree.root);
     }
 
-    public void Draw(Graphics graphics, int startWidth, int endWidth, int startHeight, int level,
-            BinaryTreeNode binaryTreeNode) {
+    public void Draw(Graphics graphics, int startWidth, int endWidth, int startHeight, int level, BinaryTreeNode binaryTreeNode) {
         String data = String.valueOf(binaryTreeNode.value);
-        graphics.setFont(new Font("Tahoma", Font.BOLD, 20));
+        graphics.setFont(new Font("Tahoma", Font.BOLD, 18));
         FontMetrics fontMetrics = graphics.getFontMetrics();
         int dataWidth = fontMetrics.stringWidth(data);
-        graphics.drawString(data, (startWidth + endWidth) / 2 - dataWidth / 2, startHeight + level / 2);
+        // graphics.drawString(data, (startWidth + endWidth) / 2 - dataWidth / 2,
+        // startHeight + level / 2);
+        graphics.drawOval((startWidth + endWidth) / 2 - dataWidth / 2, startHeight + level / 2, 25, 25);
+        graphics.drawString(data, ((startWidth + endWidth) / 2 - dataWidth / 2) + 7, (startHeight + level / 2) + 18);
+        graphics.drawLine(10, 10, 60, 60);
 
         if (binaryTreeNode.left != null) {
             Draw(graphics, startWidth, (startWidth + endWidth) / 2, startHeight + level, level, binaryTreeNode.left);
