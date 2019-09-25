@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Stack;
 
 class Main {
@@ -11,11 +8,10 @@ class Main {
         char[] postfixNotation = getPostFixNotation(expression);
         binaryTree.construct(postfixNotation);
         new TreeGUI(binaryTree);
-        for(char c : postfixNotation){
+        for (char c : postfixNotation) {
             System.out.println(getFormat(c));
-            System.out.println("Pop result");
         }
-        // items.forEach(x -> System.out.println(x));
+        System.out.println("Pop result");
     }
 
     private static String getFormat(char character) {
@@ -35,37 +31,36 @@ class Main {
     }
 
     private static char[] getPostFixNotation(String expression) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         Stack<Character> stack = new Stack<>();
         for (int i = 0; i < expression.length(); i++) {
-            char c = expression.charAt(i);
+            char character = expression.charAt(i);
 
-            if (precedence(c) > 0) {
-                while (stack.isEmpty() == false && precedence(stack.peek()) >= precedence(c)) {
-                    result += stack.pop();
+            if (precedence(character) > 0) {
+                while (stack.isEmpty() == false && precedence(stack.peek()) >= precedence(character)) {
+                    result.append(stack.pop());
                 }
-                stack.push(c);
-            } else if (c == ')') {
-                char x = stack.pop();
-                while (x != '(') {
-                    result += x;
-                    x = stack.pop();
+                stack.push(character);
+            } else if (character == ')') {
+                char element = stack.pop();
+                while (element != '(') {
+                    result.append(element);
+                    element = stack.pop();
                 }
-            } else if (c == '(') {
-                stack.push(c);
+            } else if (character == '(') {
+                stack.push(character);
             } else {
-                result += c;
+                result.append(character);
             }
         }
-        for (int i = 0; i <= stack.size(); i++) {
-            result += stack.pop();
+        for (int index = 0; index <= stack.size(); index++) {
+            result.append(stack.pop());
         }
-
-        return result.toCharArray();
+        return result.toString().toCharArray();
     }
 
-    private static int precedence(char value) {
-        switch (value) {
+    private static int precedence(char character) {
+        switch (character) {
         case '+':
         case '-':
             return 1;
