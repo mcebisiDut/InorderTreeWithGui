@@ -1,11 +1,11 @@
-import java.util.Stack;
+import java.util.*;;
 
 class Main {
 
     public static void main(String[] args) {
         BinaryTree binaryTree = new BinaryTree();
         String expression = "3+6*(x-y)+x^2";
-        char[] postfixNotation = getPostFixNotation(expression);
+        char [] postfixNotation = getPostFixNotation(expression);
         binaryTree.construct(postfixNotation);
         new TreeGUI(binaryTree);
         for (char c : postfixNotation) {
@@ -30,7 +30,7 @@ class Main {
         return "Push " + character;
     }
 
-    private static char[] getPostFixNotation(String expression) {
+    private static char [] getPostFixNotation(String expression) {
         StringBuilder result = new StringBuilder();
         Stack<Character> stack = new Stack<>();
         for (int i = 0; i < expression.length(); i++) {

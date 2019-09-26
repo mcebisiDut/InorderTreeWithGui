@@ -37,26 +37,33 @@ class DrawTree extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
         graphics.setFont(new Font("Tahoma", Font.BOLD, 18));
-        Draw(graphics, 0, getWidth(), 0, getHeight() / tree.getheight(tree.root), tree.root);
+        graphics.setColor(Color.red);
+        Draw(graphics, 0, getWidth(), 0, getHeight() / tree.getheight(tree.root), tree.root, 0);
     }
 
-    public void Draw(Graphics graphics, int startWidth, int endWidth, int startHeight, int level, BinaryTreeNode binaryTreeNode) {
+    public void Draw(Graphics graphics, int startWidth, int endWidth, int startHeight, int level,
+            BinaryTreeNode binaryTreeNode, int i) {
         String data = String.valueOf(binaryTreeNode.value);
         FontMetrics fontMetrics = graphics.getFontMetrics();
         int dataWidth = fontMetrics.stringWidth(data);
-        graphics.setColor(Color.red);
-        graphics.fillOval((startWidth + endWidth) / 2 - dataWidth / 2, startHeight + level / 2, 25, 25);
+        int xCoordinate = (startWidth + endWidth) / 2 - dataWidth / 2;
+        int yCoordinate = startHeight + level / 2;
+        graphics.fillOval(xCoordinate, yCoordinate, 25, 25);
         graphics.setColor(Color.white);
-        graphics.drawString(data, ((startWidth + endWidth) / 2 - dataWidth / 2) + 7, (startHeight + level / 2) + 18);
+        graphics.drawString("" + i, xCoordinate + 7, yCoordinate + 18);
+        i++;
         graphics.setColor(Color.red);
-        graphics.drawLine(10, 10, 60, 60);
+        graphics.drawLine(xCoordinate, yCoordinate, 20, 20);
 
         if (binaryTreeNode.left != null) {
-            Draw(graphics, startWidth, (startWidth + endWidth) / 2, startHeight + level, level, binaryTreeNode.left);
+            Draw(graphics, startWidth, (startWidth + endWidth) / 2, startHeight + level, level, binaryTreeNode.left, i);
+            i++;
         }
 
         if (binaryTreeNode.right != null) {
-            Draw(graphics, (startWidth + endWidth) / 2, endWidth, startHeight + level, level, binaryTreeNode.right);
+            Draw(graphics, (startWidth + endWidth) / 2, endWidth, startHeight + level, level, binaryTreeNode.right, i);
+            i++;
         }
+
     }
 }
