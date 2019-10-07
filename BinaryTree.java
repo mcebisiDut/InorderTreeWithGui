@@ -12,7 +12,8 @@ class BinaryTree {
         return false;
     }
 
-    void construct(char postfix[]) {
+    void construct(String postfixNotation) {
+        char[] postfix = postfixNotation.toCharArray();
         Stack<BinaryTreeNode> stack = new Stack<BinaryTreeNode>();
 
         for (int i = 0; i < postfix.length; i++) {

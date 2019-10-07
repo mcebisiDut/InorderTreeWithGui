@@ -1,11 +1,6 @@
-import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.Color;
 
 public class TreeGUI extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -37,33 +32,42 @@ class DrawTree extends JPanel {
     @Override
     protected void paintComponent(Graphics graphics) {
         graphics.setFont(new Font("Tahoma", Font.BOLD, 18));
-        graphics.setColor(Color.red);
-        Draw(graphics, 0, getWidth(), 0, getHeight() / tree.getheight(tree.root), tree.root, 0);
+        Draw(graphics, 0, getWidth(), 0, getHeight() / tree.getheight(tree.root), tree.root);
     }
 
-    public void Draw(Graphics graphics, int startWidth, int endWidth, int startHeight, int level,
-            BinaryTreeNode binaryTreeNode, int i) {
-        String data = String.valueOf(binaryTreeNode.value);
-        FontMetrics fontMetrics = graphics.getFontMetrics();
-        int dataWidth = fontMetrics.stringWidth(data);
-        int xCoordinate = (startWidth + endWidth) / 2 - dataWidth / 2;
-        int yCoordinate = startHeight + level / 2;
-        graphics.fillOval(xCoordinate, yCoordinate, 25, 25);
-        graphics.setColor(Color.white);
-        graphics.drawString("" + i, xCoordinate + 7, yCoordinate + 18);
-        i++;
-        graphics.setColor(Color.red);
-        graphics.drawLine(xCoordinate, yCoordinate, 20, 20);
+    public Point Draw(Graphics graphics, int startWidth, int endWidth, int startHeight, int level, BinaryTreeNode binaryTreeNode) {
+        String value = String.valueOf(binaryTreeNode.value);
+        int dataWidth = graphics.getFontMetrics().stringWidth(value);
+        drawColoredCircle(graphics, startWidth, endWidth, startHeight, level, dataWidth);
 
+        Point rootNode = new Point((((startWidth + endWidth) / 2) - (dataWidth / 2)) + 7,(startHeight + level / 2) + 18);
+        insertText(graphics, value, rootNode);
+
+        graphics.setColor(Color.red);
         if (binaryTreeNode.left != null) {
-            Draw(graphics, startWidth, (startWidth + endWidth) / 2, startHeight + level, level, binaryTreeNode.left, i);
-            i++;
+            Point leftChild = Draw(graphics, startWidth, (startWidth + endWidth) / 2, startHeight + level, level, binaryTreeNode.left);
+            drawLine(graphics, rootNode, leftChild);
         }
 
         if (binaryTreeNode.right != null) {
-            Draw(graphics, (startWidth + endWidth) / 2, endWidth, startHeight + level, level, binaryTreeNode.right, i);
-            i++;
+            Point rightChild = Draw(graphics, (startWidth + endWidth) / 2, endWidth, startHeight + level, level, binaryTreeNode.right);
+            drawLine(graphics, rootNode, rightChild);
         }
 
+        return rootNode;
+    }
+
+    private void drawColoredCircle(Graphics graphics, int startWidth, int endWidth, int startHeight, int level, int dataWidth) {
+        graphics.setColor(Color.red);
+        graphics.fillOval((startWidth + endWidth) / 2 - dataWidth / 2, startHeight + level / 2, 25, 25);
+    }
+
+    private void insertText(Graphics graphics, String value, Point rootNode) {
+        graphics.setColor(Color.white);
+        graphics.drawString(value, rootNode.x, rootNode.y);
+    }
+
+    private void drawLine(Graphics graphics, Point root, Point child) {
+        graphics.drawLine(root.x, root.y, child.x - 3, child.y - 10);
     }
 }
